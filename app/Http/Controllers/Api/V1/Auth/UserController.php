@@ -72,7 +72,7 @@ class UserController extends Controller
      *
      * Create a new user.
      *
-     * @param CreateUserRequest $request
+     * @param  CreateUserRequest  $request
      *
      * @return JsonResponse
      */
@@ -84,5 +84,76 @@ class UserController extends Controller
 
         return response()->json(['user' => $user], 201);
     }
+
+
+    /**
+     * @OA\Delete(
+     *     path="/v1/user/delete",
+     *     operationId="deleteUser",
+     *     tags={"Users"},
+     *     summary="Delete user",
+     *     security={{"bearerAuth":{}}},
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         description="Only an administrator can delete a user. If you want to delete your account, you don’t have to transfer your id.",
+     *         @OA\Schema(
+     *             type="number",
+     *             example=3
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Successful operation",
+     *         @OA\JsonContent(
+     *             example={
+     *                 "message": "User deleted successfully"
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=401,
+     *         description="Unauthorized",
+     *         @OA\JsonContent(
+     *             example={
+     *                 "error": "Unauthorized"
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=403,
+     *         description="Forbidden",
+     *         @OA\JsonContent(
+     *             example={
+     *                 "error": "Forbidden"
+     *             }
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Not Found",
+     *         @OA\JsonContent(
+     *             example={
+     *                 "error": "User not found"
+     *             }
+     *         )
+     *     )
+     * )
+     *
+     * My data.
+     *
+     * @return JsonResponse
+     */
+    public function delete($id = null): JsonResponse
+    {
+        $id = $id ?? auth('api')->user()->id;
+
+        $user = User::query()->whereNull('deleted_at')->findOrFail($id);
+
+        $user->delete();
+
+        return response()->json(['message' => 'User deleted successfully']);
+    }
+
 
 }

@@ -25,16 +25,16 @@ Route::group(['prefix' => 'v1'], function () {
         Route::post('/logout', LogoutController::class)->middleware('auth:api');
     });
 
-    Route::group(['middleware' => 'jwt'], function () {
+    Route::group(['middleware' => ['jwt','checkIfUserIsDeleted']], function () {
         Route::group(['middleware' => ['auth:api']], function () {
 
             Route::group(['prefix' => 'user'], function () {
 
 //                Route::get('/{id?}', [UserController::class, 'get']);
 //                Route::put('/{id?}', [UserController::class, 'update']);
-                Route::group(['middleware' => ['manage:user']], function () {
+                Route::group(['middleware' => ['manage.user']], function () {
                     Route::post('/', [UserController::class, 'create']);
-//                    Route::delete('/{id?}', [UserController::class, 'delete']);
+                    Route::delete('/{id?}', [UserController::class, 'delete']);
                 });
 
 

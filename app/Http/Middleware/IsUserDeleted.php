@@ -8,7 +8,7 @@ use PHPOpenSourceSaver\JWTAuth\Exceptions\JWTException;
 use Illuminate\Http\Request;
 
 
-class ManageUserPermission
+class IsUserDeleted
 {
     /**
      * Handle an incoming request.
@@ -22,8 +22,8 @@ class ManageUserPermission
     public function handle(Request $request, Closure $next): mixed
     {
 
-        if (! $request->user()->can('create users')) {
-            return response()->json(['error' => 'Forbidden'], 403);
+        if ($request->user()->deleted_at) {
+            return response()->json(['error' => 'Unauthorized'], 401);
         }
 
         return $next($request);

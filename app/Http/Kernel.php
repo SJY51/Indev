@@ -66,7 +66,8 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'auth.guest' => \App\Http\Middleware\NotAuthorizedIfAuthenticated::class,
         'jwt' => \App\Http\Middleware\Jwt::class,
-        'manage:user' => \App\Http\Middleware\ManageUserPermission::class,
+        'manage.user' => \App\Http\Middleware\ManageUserPermission::class,
+        'checkIfUserIsDeleted' => \App\Http\Middleware\IsUserDeleted::class,
 
     ];
 
