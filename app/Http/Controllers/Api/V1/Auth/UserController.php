@@ -16,12 +16,12 @@ class UserController extends Controller
      *     path="/v1/user/{id}",
      *     operationId="GetUser",
      *     tags={"User"},
-     *     summary="Get user information",
+     *     summary="Get user information. The administrator can interact with his profile without sharing the id.",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
-     *         description="User id.",
+     *         description="User id. The administrator can interact with his profile without sharing the id.",
      *         example=1,
      *         required=false,
      *         @OA\Schema(type="number")
@@ -81,6 +81,8 @@ class UserController extends Controller
         if(!UserHelper::isCurrentUserOrHasAccess($id,'get users')){
             return response()->json(['error' => 'Forbidden'], 403);
         }
+
+        $id = UserHelper::getUserId($id);
 
         $user = User::query()->findOrFail($id);
 
@@ -169,7 +171,7 @@ class UserController extends Controller
      *     path="/v1/user/{id}",
      *     operationId="updateUser",
      *     tags={"User"},
-     *     summary="Update User",
+     *     summary="Update User. The administrator can interact with his profile without sharing the id.",
      *     security={{"bearerAuth":{}}},
      *     @OA\Parameter(
      *         name="id",
@@ -259,7 +261,7 @@ class UserController extends Controller
      *     path="/v1/user/{id}",
      *     operationId="deleteUser",
      *     tags={"User"},
-     *     summary="Delete user",
+     *     summary="Delete user. The administrator can interact with his profile without sharing the id.",
      *     security={{"bearerAuth":{}}},
      *      @OA\Parameter(
      *          name="id",

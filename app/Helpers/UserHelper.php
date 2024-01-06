@@ -10,7 +10,7 @@ class UserHelper
         return $id && $id !== '{id}' ? $id : auth('api')->user()->id;
     }
 
-    public function isCurrentUserOrHasAccess($id, $permission): bool
+    public  static function isCurrentUserOrHasAccess($id, $permission): bool
     {
         $user = auth('api')->user();
 
