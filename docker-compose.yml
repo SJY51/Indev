@@ -1,0 +1,23 @@
+version: '1'
+
+services:
+    web:
+        build: ./
+        environment:
+            - APACHE_RUN_USER=#1000
+        volumes:
+            - ./:/var/www/html
+        ports:
+            - 8079:80
+        working_dir: /var/www/html
+    db:
+        image: mysql:8.0.26
+        #restart: always
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_DATABASE: indev
+        expose:
+            - 3306
+        ports:
+            - 3306:3306
+
