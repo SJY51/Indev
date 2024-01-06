@@ -88,20 +88,19 @@ class UserController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/v1/user/delete",
+     *     path="/v1/user/{id}",
      *     operationId="deleteUser",
      *     tags={"Users"},
      *     summary="Delete user",
      *     security={{"bearerAuth":{}}},
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         description="Only an administrator can delete a user. If you want to delete your account, you don’t have to transfer your id.",
-     *         @OA\Schema(
-     *             type="number",
-     *             example=3
-     *         )
-     *     ),
+     *      @OA\Parameter(
+     *          name="id",
+     *          in="path",
+     *          description="User id.",
+     *          example=1,
+     *          required=false,
+     *          @OA\Schema(type="number")
+     *      ),
      *     @OA\Response(
      *         response=200,
      *         description="Successful operation",
@@ -146,7 +145,7 @@ class UserController extends Controller
      */
     public function delete($id = null): JsonResponse
     {
-        $id = $id ?? auth('api')->user()->id;
+        $id = $id && $id !== '{id}' ? $id : auth('api')->user()->id;
 
         $user = User::query()->whereNull('deleted_at')->findOrFail($id);
 
