@@ -33,6 +33,8 @@ class DeployCommand extends Command
         $privateKey = $directory.'/jwt-rsa-4096-private.pem';
         $publicKey = $directory.'/jwt-rsa-4096-public.pem';
 
+        Artisan::call('key:generate');
+        Artisan::call('jwt:secret');
         Artisan::call('migrate');
         Artisan::call('db:seed');
         Artisan::call('l5-swagger:generate');
