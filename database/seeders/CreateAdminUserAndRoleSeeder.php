@@ -32,11 +32,16 @@ class CreateAdminUserAndRoleSeeder extends Seeder
             $admin->assignRole($adminRole);
         }
 
-        $createUsersPermission = Permission::firstOrCreate(['name' => 'create users', 'guard_name' => 'api']);
+        $permissions = ['create users', 'edit users', 'get users'];
 
-        if (!$adminRole->hasPermissionTo('create users')) {
-            $adminRole->givePermissionTo($createUsersPermission);
+        foreach ($permissions as $permission) {
+            $permissionInstance = Permission::firstOrCreate(['name' => $permission, 'guard_name' => 'api']);
+
+            if (!$adminRole->hasPermissionTo($permission)) {
+                $adminRole->givePermissionTo($permissionInstance);
+            }
         }
+
     }
 
 

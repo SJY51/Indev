@@ -30,8 +30,8 @@ Route::group(['prefix' => 'v1'], function () {
 
             Route::group(['prefix' => 'user'], function () {
 
-//                Route::get('/{id?}', [UserController::class, 'get']);
-//                Route::put('/{id?}', [UserController::class, 'update']);
+                Route::get('/{id?}', [UserController::class, 'get']);
+                Route::put('/{id?}', [UserController::class, 'update']);
                 Route::group(['middleware' => ['manage.user']], function () {
                     Route::post('/', [UserController::class, 'create']);
                     Route::delete('/{id?}', [UserController::class, 'delete']);
